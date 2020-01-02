@@ -1,6 +1,6 @@
 # `trombik.dumpcap`
 
-[![Build Status](https://travis-ci.com/trombik/trombik.dumpcap.svg?branch=master)](https://travis-ci.com/trombik/trombik.dumpcap)
+[![Build Status](https://travis-ci.com/trombik/ansible-role-dumpcap.svg?branch=master)](https://travis-ci.com/trombik/ansible-role-dumpcap)
 
 `ansible` role for `dumpcap(1)` in `wireshark`. The role configures and runs
 `dumpcap(1)` in the background. Output files are under `dumpcap_log_dir`.
