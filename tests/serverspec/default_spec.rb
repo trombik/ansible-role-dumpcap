@@ -28,6 +28,7 @@ when "ubuntu"
   package = "wireshark-common"
   interface = "eth0"
   group = "wireshark"
+  log_dir_group = group
 end
 flags = "-b interval:60 -b files:10 -f ip -g -i #{interface} -q -w #{log_dir}/dumpcap"
 
