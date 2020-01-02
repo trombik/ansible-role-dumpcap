@@ -1,0 +1,9 @@
+---
+
+dumpcap_package: "{{ __dumpcap_package }}"
+dumpcap_service: "{{ __dumpcap_service }}"
+dumpcap_extra_packages: []
+dumpcap_user: "{{ __dumpcap_user }}"
+dumpcap_group: "{{ __dumpcap_group }}"
+dumpcap_log_dir: /var/log/dumpcap
+dumpcap_flags: ""

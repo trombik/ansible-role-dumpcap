@@ -1,0 +1,20 @@
+---
+
+- name: "Include vars/{{ ansible_os_family }}.yml"
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: "Include install-{{ ansible_os_family }}.yml"
+  include: "install-{{ ansible_os_family }}.yml"
+
+- name: Create dumpcap_log_dir
+  file:
+    path: "{{ dumpcap_log_dir }}"
+    owner: "{{ dumpcap_user }}"
+    group: "{{ dumpcap_group }}"
+    mode: 0755
+    state: directory
+
+- name: Start dumpcap_service
+  service:
+    name: "{{ dumpcap_service }}"
+    state: started

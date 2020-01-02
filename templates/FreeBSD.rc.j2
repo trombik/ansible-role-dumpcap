@@ -1,0 +1,31 @@
+#!/bin/sh
+# Managed by ansible
+
+# $FreeBSD$
+#
+# PROVIDE: dumpcap
+# REQUIRE: DAEMON NETWORKING
+# KEYWORD: shutdown
+#
+# dumpcap_enable (bool):   Enable dumpcap (NO)
+# dumpcap_args (string):  Options to dumpcap ("")
+# dumpcap_user (string):  User name to run dumpcap as
+# dumpcap_group (string):  Group name to run dumpcap as
+
+. /etc/rc.subr
+
+name=dumpcap
+rcvar=dumpcap_enable
+
+load_rc_config ${name}
+
+: ${dumpcap_enable:="NO"}
+: ${dumpcap_args:=""}
+: ${dumpcap_user:="root"}
+
+pidfile="/var/run/${name}.pid"
+procname="/usr/local/bin/dumpcap"
+command="/usr/sbin/daemon"
+command_args="-S -s info -l daemon -f -p ${pidfile} ${procname} ${dumpcap_args}"
+
+run_rc_command "$1"

@@ -1,0 +1,16 @@
+# Managed by ansible
+
+[Unit]
+Description=Record packets with dumpcap(1)
+
+[Service]
+Type=exec
+ExecStart=/usr/bin/dumpcap $DUMPCAP_FLAGS
+EnvironmentFile=-/etc/{% if ansible_os_family == 'Debian' %}default{% else %}sysconfig{% endif %}/dumpcap
+User={{ dumpcap_user }}
+Group={{ dumpcap_group }}
+AmbientCapabilities=CAP_NET_RAW CAP_NET_ADMIN
+CapabilityBoundingSet=CAP_NET_RAW CAP_NET_ADMIN
+
+[Install]
+WantedBy=multi-user.target

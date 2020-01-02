@@ -1,0 +1,10 @@
+---
+
+- name: Restart dumpcap_service
+  service:
+    name: "{{ dumpcap_service }}"
+    state: restarted
+
+- name: Reload systemd in dumpcap
+  systemd:
+    daemon_reload: yes

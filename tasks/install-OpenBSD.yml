@@ -1,0 +1,27 @@
+---
+
+- name: Install dumpcap_extra_packages
+  openbsd_pkg:
+    name: "{{ dumpcap_extra_packages }}"
+    state: present
+
+- name: Install dumpcap_package
+  openbsd_pkg:
+    name: "{{ dumpcap_package }}"
+    state: present
+
+- name: "Create /etc/rc.d/{{ dumpcap_service }}"
+  template:
+    src: OpenBSD.rc.j2
+    dest: "/etc/rc.d/{{ dumpcap_service }}"
+    mode: '0755'
+  notify:
+    - Restart dumpcap_service
+
+- name: Enable dumpcap_service
+  service:
+    name: "{{ dumpcap_service }}"
+    arguments: "{{ dumpcap_flags }}"
+    enabled: yes
+  notify:
+    - Restart dumpcap_service

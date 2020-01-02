@@ -1,0 +1,22 @@
+---
+galaxy_info:
+  author: Tomoyuki Sakurai
+  role_name: dumpcap
+  description: Capture network packets with dumpcap(1) in wireshark
+  company: N/A
+  license: MIT
+  min_ansible_version: 2.0
+  platforms:
+    - name: FreeBSD
+      versions:
+        - 12.0
+    - name: OpenBSD
+      versions:
+        - 6.5
+    - name: Ubuntu
+      versions:
+        - bionic
+  galaxy_tags:
+    - wireshark
+    - dumpcap
+dependencies: []

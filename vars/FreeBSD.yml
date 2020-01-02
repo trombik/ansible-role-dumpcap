@@ -1,0 +1,5 @@
+---
+__dumpcap_service: dumpcap
+__dumpcap_package: net/wireshark-lite
+__dumpcap_user: root
+__dumpcap_group: network

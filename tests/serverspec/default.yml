@@ -1,0 +1,50 @@
+---
+- hosts: localhost
+  roles:
+    - role: trombik.freebsd_pkg_repo
+      when: ansible_os_family == 'FreeBSD'
+    - role: ansible-role-dumpcap
+  pre_tasks:
+    - name: Dump all hostvars
+      debug:
+        var: hostvars[inventory_hostname]
+  post_tasks:
+    - name: List all services (systemd)
+      # workaround ansible-lint: [303] service used in place of service module
+      shell: "echo; systemctl list-units --type service"
+      changed_when: false
+      when:
+        - ansible_os_family == 'RedHat' or ansible_os_family == 'Debian'
+    - name: list all services (FreeBSD service)
+      # workaround ansible-lint: [303] service used in place of service module
+      shell: "echo; service -l"
+      changed_when: false
+      when:
+        - ansible_os_family == 'FreeBSD'
+  vars:
+    os_dumpcap_flags:
+      # translation: write output to files with ring buffer mode, 10 files,
+      # 60 sec per file. capture filiter is `ip`. the output files should be
+      # group-readable. do not display the continuous count of packets.
+      # output file name is `/var/log/dumpcap/dumpcap_00001_20190714120117
+      OpenBSD: "-b interval:60 -b files:10 -f ip -g -i {{ ansible_default_ipv4['device'] | default(omit) }} -q -w {{ dumpcap_log_dir }}/dumpcap"
+      FreeBSD: |
+        dumpcap_user='{{ dumpcap_user }}'
+        dumpcap_args='-b interval:60 -b files:10 -f ip -g -i {{ ansible_default_ipv4['device'] | default(omit) }} -q -w {{ dumpcap_log_dir }}/dumpcap'
+      Debian: |
+        DUMPCAP_FLAGS='-b interval:60 -b files:10 -f ip -g -i {{ ansible_default_ipv4['interface'] | default(omit) }} -q -w {{ dumpcap_log_dir }}/dumpcap'
+      RedHat: ""
+    dumpcap_flags: "{{ os_dumpcap_flags[ansible_os_family] }}"
+    freebsd_pkg_repo:
+      # disable the default package repository, which currently has issues
+      FreeBSD:
+        enabled: "false"
+        state: present
+      FreeBSD_latest:
+        enabled: "true"
+        state: present
+        url: pkg+https://pkg.FreeBSD.org/${ABI}/latest
+        mirror_type: srv
+        signature_type: fingerprints
+        fingerprints: /usr/share/keys/pkg
+        priority: 100

@@ -1,0 +1,40 @@
+---
+
+- name: Install dumpcap_extra_packages
+  apt:
+    name: "{{ dumpcap_extra_packages }}"
+    state: present
+
+- name: Install dumpcap_package
+  apt:
+    name: "{{ dumpcap_package }}"
+    state: present
+
+- name: "Create systemd unit file for {{ dumpcap_service }}"
+  template:
+    src: systemd.unit.j2
+    dest: "/lib/systemd/system/{{ dumpcap_service }}.service"
+    mode: '0644'
+  notify:
+    - Reload systemd in dumpcap
+    - Restart dumpcap_service
+
+- name: Enable dumpcap_service
+  service:
+    name: "{{ dumpcap_service }}"
+    enabled: yes
+
+- name: Create dumpcap_group
+  group:
+    name: "{{ dumpcap_group }}"
+
+- name: "Create /etc/default/{{ dumpcap_service }}"
+  template:
+    src: Debian.default.j2
+    dest: "/etc/default/{{ dumpcap_service }}"
+    mode: 0644
+    # keep the original copy in case you need the defaults in it
+    backup: yes
+    validate: sh -n %s
+  notify:
+    - Restart dumpcap_service

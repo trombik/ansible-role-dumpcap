@@ -1,0 +1,32 @@
+---
+
+- name: Install dumpcap_extra_packages
+  pkgng:
+    name: "{{ dumpcap_extra_packages }}"
+    state: present
+
+- name: Install dumpcap_package
+  pkgng:
+    name: "{{ dumpcap_package }}"
+    state: present
+
+- name: Create rc.d/dumpcap
+  template:
+    src: FreeBSD.rc.j2
+    dest: /usr/local/etc/rc.d/dumpcap
+    mode: '0755'
+    validate: sh -n %s
+
+- name: Enable dumpcap_service
+  service:
+    name: "{{ dumpcap_service }}"
+    enabled: yes
+
+- name: "Create /etc/rc.conf.d/{{ dumpcap_service }}"
+  template:
+    src: FreeBSD.rcd.j2
+    dest: "/etc/rc.conf.d/{{ dumpcap_service }}"
+    mode: 0644
+    validate: sh -n %s
+  notify:
+    - Restart dumpcap_service
