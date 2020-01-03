@@ -16,6 +16,9 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - bionic
+    - name: el
+      versions:
+        - 7
   galaxy_tags:
     - wireshark
     - dumpcap

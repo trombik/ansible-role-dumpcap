@@ -5,7 +5,7 @@ Description=Record packets with dumpcap(1)
 
 [Service]
 Type=exec
-ExecStart=/usr/bin/dumpcap $DUMPCAP_FLAGS
+ExecStart={% if ansible_os_family == 'Debian' %}/usr/bin/dumpcap{% else %}/sbin/dumpcap{% endif %} $DUMPCAP_FLAGS
 EnvironmentFile=-/etc/{% if ansible_os_family == 'Debian' %}default{% else %}sysconfig{% endif %}/dumpcap
 User={{ dumpcap_user }}
 Group={{ dumpcap_group }}
