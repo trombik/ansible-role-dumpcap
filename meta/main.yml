@@ -16,7 +16,7 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - bionic
-    - name: el
+    - name: EL
       versions:
         - 7
   galaxy_tags:
