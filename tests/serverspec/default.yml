@@ -33,7 +33,8 @@
         dumpcap_args='-b interval:60 -b files:10 -f ip -g -i {{ ansible_default_ipv4['device'] | default(omit) }} -q -w {{ dumpcap_log_dir }}/dumpcap'
       Debian: |
         DUMPCAP_FLAGS='-b interval:60 -b files:10 -f ip -g -i {{ ansible_default_ipv4['interface'] | default(omit) }} -q -w {{ dumpcap_log_dir }}/dumpcap'
-      RedHat: ""
+      RedHat: |
+        DUMPCAP_FLAGS='-b interval:60 -b files:10 -f ip -g -i {{ ansible_default_ipv4['interface'] | default(omit) }} -q -w {{ dumpcap_log_dir }}/dumpcap'
     dumpcap_flags: "{{ os_dumpcap_flags[ansible_os_family] }}"
     freebsd_pkg_repo:
       # disable the default package repository, which currently has issues

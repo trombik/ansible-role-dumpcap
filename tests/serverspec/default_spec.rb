@@ -29,6 +29,12 @@ when "ubuntu"
   interface = "eth0"
   group = "wireshark"
   log_dir_group = group
+when "redhat"
+  default_group = "root"
+  package = "wireshark"
+  interface = "eth0"
+  group = "wireshark"
+  log_dir_group = group
 end
 flags = "-b interval:60 -b files:10 -f ip -g -i #{interface} -q -w #{log_dir}/dumpcap"
 
@@ -73,6 +79,7 @@ when "redhat"
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
     its(:content) { should match(/Managed by ansible/) }
+    its(:content) { should match(/DUMPCAP_FLAGS='#{Regexp.escape(flags)}'/) }
   end
 when "ubuntu"
   describe file("/etc/default/#{service}") do
